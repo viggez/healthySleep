@@ -1,12 +1,15 @@
 package app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.*;
 import java.time.format.*;
+import java.time.temporal.ChronoUnit;
+
 
 // Main class to run the application
-public class TimeDisplay {
+public class TimeDisplayApp {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Creating a new JFrame for the application window
@@ -31,9 +34,11 @@ class TimePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private final JLabel timeLabel; // JLabel to display the time
     private final Timer timer; // Timer to update the time every second
+    private final AlarmPanel alarmPanel; // Add an AlarmPanel for setting the alarm
 
     public TimePanel() {
         timeLabel = new JLabel(); // Creating a new JLabel for the time
+        alarmPanel = new AlarmPanel(); // Create a new AlarmPanel
         // Set the font for the timelabel
         timeLabel.setFont(new Font("Arial", Font.PLAIN, 92));
         // Update the timeLabel with the current time
@@ -54,6 +59,7 @@ class TimePanel extends JPanel {
         setLayout(new BorderLayout());
         // Add the timeLabel to the top of the window
         add(timeLabel, BorderLayout.PAGE_START);
+        add(alarmPanel, BorderLayout.PAGE_END);
         // Center the timeLabel horizontally
         timeLabel.setHorizontalAlignment(JLabel.CENTER);
     }
@@ -68,5 +74,9 @@ class TimePanel extends JPanel {
         String formattedTime = cetTime.format(formatter);
         // Set the text of the timelabel
         timeLabel.setText(formattedTime);
+        if (alarmPanel.isAlarmActive() && LocalTime.now(ZoneId.of("CET")).truncatedTo(ChronoUnit.SECONDS).equals(alarmPanel.getAlarmTime())) {
+            JOptionPane.showMessageDialog(this, "Alarm! Time's up!", "Alarm", JOptionPane.INFORMATION_MESSAGE);
+            alarmPanel.toggleAlarm();
+        }
     }
 }

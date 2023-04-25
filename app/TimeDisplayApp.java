@@ -6,6 +6,10 @@ import java.awt.event.*;
 import java.time.*;
 import java.time.format.*;
 import java.time.temporal.ChronoUnit;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 // Main class to run the application
@@ -75,8 +79,21 @@ class TimePanel extends JPanel {
         // Set the text of the timelabel
         timeLabel.setText(formattedTime);
         if (alarmPanel.isAlarmActive() && LocalTime.now(ZoneId.of("CET")).truncatedTo(ChronoUnit.SECONDS).equals(alarmPanel.getAlarmTime())) {
+            playAlarmSound();
             JOptionPane.showMessageDialog(this, "Alarm! Time's up!", "Alarm", JOptionPane.INFORMATION_MESSAGE);
             alarmPanel.toggleAlarm();
         }
     }
+    private void playAlarmSound() {
+        try {
+            File audioFile = new File("/Users/vigge/Downloads/alarms.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+        } catch (Exception e) {
+            System.err.println("Error playing alarm sound: " + e.getMessage());
+        }
+    }
+
 }

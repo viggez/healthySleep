@@ -11,9 +11,9 @@ import java.awt.GridBagConstraints;
 
 public class AlarmPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    private final JTextField hourField;
-    private final JTextField minuteField;
-    private final JTextField secondField;
+    public final JTextField hourField;
+    public final JTextField minuteField;
+    public final JTextField secondField;
     private final JButton alarmButton;
     private boolean alarmActive = false;
     private LocalTime alarmTime = null;

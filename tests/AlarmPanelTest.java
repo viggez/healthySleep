@@ -38,13 +38,11 @@ class AlarmPanelTest {
 
     @Test
     void testValidAlarmTime() {
-        // Set a valid alarm time
         alarmPanel.hourField.setText("12");
         alarmPanel.minuteField.setText("00");
         alarmPanel.secondField.setText("00");
         alarmPanel.toggleAlarm();
 
-        // Test that the alarm time is set correctly
         LocalTime expectedAlarmTime = LocalTime.of(12, 0, 0);
         assertEquals(expectedAlarmTime, alarmPanel.getAlarmTime());
     }

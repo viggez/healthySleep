@@ -1,99 +1,123 @@
 package app;
 
-import javax.swing.*;
+
 import java.awt.*;
-import java.awt.event.*;
-import java.time.*;
-import java.time.format.*;
-import java.time.temporal.ChronoUnit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 
 
-// Main class to run the application
 public class TimeDisplayApp {
+    public TimeDisplayApp() {
+    }
+
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            // Creating a new JFrame for the application window
             JFrame frame = new JFrame("Healthy Sleep");
-            // Stops the code from running when exiting the window
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            // Creating a new TimePanel and adding it to the frame
-            frame.add(new TimePanel());
-            // Adjust the size of the frame to fit its content
+            TimePanel timePanel = new TimePanel();
+            frame.add(timePanel, "First");
+            JPanel buttonPanel = new JPanel(new FlowLayout());
+            JButton relaxingSoundsButton = new JButton("Relaxing Sounds too fall asleep");
+            Dimension buttonSize = new Dimension(300, 30);
+            relaxingSoundsButton.setPreferredSize(buttonSize);
+            buttonPanel.add(relaxingSoundsButton);
+            frame.add(buttonPanel, "Center");
+            relaxingSoundsButton.addActionListener((e) -> {
+                JFrame soundsFrame = new JFrame("Relaxing Sounds too fall asleep");
+                soundsFrame.setDefaultCloseOperation(2);
+                soundsFrame.setSize(400, 200);
+                soundsFrame.add(new RelaxingSounds());
+                soundsFrame.setLocationRelativeTo((Component)null);
+                soundsFrame.setVisible(true);
+            });
+            JButton sleepAnalysisButton = new JButton("Sleep Environment Analysis");
+            Dimension buttonSize3 = new Dimension(300, 30);
+            sleepAnalysisButton.setPreferredSize(buttonSize3);
+            sleepAnalysisButton.addActionListener((e) -> {
+                JFrame sleepAnalysisFrame = new JFrame("Sleep Environment Analysis");
+                sleepAnalysisFrame.setDefaultCloseOperation(2);
+                sleepAnalysisFrame.setSize(1000, 830);
+                sleepAnalysisFrame.setResizable(false);
+                sleepAnalysisFrame.add(new SleepEnvironmentAnalysis());
+                sleepAnalysisFrame.setLocationRelativeTo((Component)null);
+                sleepAnalysisFrame.setVisible(true);
+            });
+            buttonPanel.add(sleepAnalysisButton);
             frame.pack();
-            // Set the size of the JFrame
             frame.setSize(750, 830);
-            // Position the frame in the center of the screen
-            frame.setLocationRelativeTo(null);
-            // Make the frame visible
+            frame.setLocationRelativeTo((Component)null);
             frame.setVisible(true);
         });
     }
 }
-// Custom JPanel to display the current time
 class TimePanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    private final JLabel timeLabel; // JLabel to display the time
-    private final Timer timer; // Timer to update the time every second
-    private final AlarmPanel alarmPanel; // Add an AlarmPanel for setting the alarm
+    private final JLabel timeLabel = new JLabel();
+    private final Timer timer;
+    private final AlarmPanel alarmPanel = new AlarmPanel();
+    private Clip currentClip;
+
 
     public TimePanel() {
-        timeLabel = new JLabel(); // Creating a new JLabel for the time
-        alarmPanel = new AlarmPanel(); // Create a new AlarmPanel
-        // Set the font for the timelabel
-        timeLabel.setFont(new Font("Arial", Font.PLAIN, 92));
-        // Update the timeLabel with the current time
-        updateCurrentTime();
-
-        // Create a new Timer that triggers an ActionEvent every second
-        timer = new Timer(1000, new ActionListener() {
-            // Override the actionPerformed method to handle the timer event
-            @Override
+        this.timeLabel.setFont(new Font("Arial", 0, 92));
+        this.updateCurrentTime();
+        this.timer = new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Update the timelabel with the current time
-                updateCurrentTime();
+                TimePanel.this.updateCurrentTime();
             }
         });
-        timer.start(); // Start the timer
-
-        // Set the layout manager for the TimePanel
-        setLayout(new BorderLayout());
-        // Add the timeLabel to the top of the window
-        add(timeLabel, BorderLayout.PAGE_START);
-        add(alarmPanel, BorderLayout.PAGE_END);
-        // Center the timeLabel horizontally
-        timeLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.timer.start();
+        this.setLayout(new BorderLayout());
+        this.add(this.timeLabel, "First");
+        this.add(this.alarmPanel, "Last");
+        this.timeLabel.setHorizontalAlignment(0);
     }
 
-    // Method to update the current time displayed in the timeLabel
+
     private void updateCurrentTime() {
-        // Get the current time in CET timezone
         ZonedDateTime cetTime = ZonedDateTime.now(ZoneId.of("CET"));
-        // Create a formatter for the time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        // Format the time using the formatter
         String formattedTime = cetTime.format(formatter);
-        // Set the text of the timelabel
-        timeLabel.setText(formattedTime);
-        if (alarmPanel.isAlarmActive() && LocalTime.now(ZoneId.of("CET")).truncatedTo(ChronoUnit.SECONDS).equals(alarmPanel.getAlarmTime())) {
-            playAlarmSound();
-            JOptionPane.showMessageDialog(this, "Alarm! Time's up!", "Alarm", JOptionPane.INFORMATION_MESSAGE);
-            alarmPanel.toggleAlarm();
+        this.timeLabel.setText(formattedTime);
+        if (this.alarmPanel.isAlarmActive() && LocalTime.now(ZoneId.of("CET")).truncatedTo(ChronoUnit.SECONDS).equals(this.alarmPanel.getAlarmTime())) {
+            this.playAlarmSound();
+            int result = JOptionPane.showConfirmDialog(this, "Alarm! Time's up!", "Alarm", -1, 1);
+            if (result == 0) {
+                this.stopAlarmSound();
+                this.alarmPanel.toggleAlarm();
+            }
         }
     }
     private void playAlarmSound() {
         try {
-            File audioFile = new File("/Users/vigge/Downloads/alarms.wav");
+            File audioFile = new File("birds-19624.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();
-        } catch (Exception e) {
-            System.err.println("Error playing alarm sound: " + e.getMessage());
+            this.currentClip = clip;
+        } catch (Exception var4) {
+            System.err.println("Error playing alarm sound: " + var4.getMessage());
         }
     }
+    private void stopAlarmSound() {
+        if (this.currentClip != null) {
+            this.currentClip.stop();
+            this.currentClip.flush();
+            this.currentClip.close();
+        }
 
+
+    }
 }
+

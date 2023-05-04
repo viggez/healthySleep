@@ -1,91 +1,88 @@
 package app;
 
-import javax.swing.*;
-import java.awt.Dimension;
-import java.time.*;
-import javax.swing.JOptionPane;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.time.DateTimeException;
+import java.time.LocalTime;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 public class AlarmPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    public final JTextField hourField;
-    public final JTextField minuteField;
-    public final JTextField secondField;
+    public final JTextField hourField = new JTextField(2);
+    public final JTextField minuteField = new JTextField(2);
+    public final JTextField secondField = new JTextField(2);
     private final JButton alarmButton;
     private boolean alarmActive = false;
     private LocalTime alarmTime = null;
 
+
     public AlarmPanel() {
-        // Create input fields for setting the alarm
-        hourField = new JTextField(2);
-        minuteField = new JTextField(2);
-        secondField = new JTextField(2);
-
-        setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(650, 150));
-
+        this.setLayout(new GridBagLayout());
+        this.setPreferredSize(new Dimension(650, 150));
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-
-        // Create the alarm activation button
-        alarmButton = new JButton("Set Alarm");
-        alarmButton.addActionListener(e -> toggleAlarm());
-
-        // Add input fields and button to the panel
+        c.fill = 2;
+        this.alarmButton = new JButton("Set Alarm");
+        this.alarmButton.addActionListener((e) -> {
+            this.toggleAlarm();
+        });
         c.gridx = 0;
         c.gridy = 0;
-        add(new JLabel("Hour:"), c);
-
+        this.add(new JLabel("Hour:"), c);
         c.gridx = 1;
         c.gridy = 0;
-        add(hourField, c);
-
+        this.add(this.hourField, c);
         c.gridx = 2;
         c.gridy = 0;
-        add(new JLabel("Minute:"), c);
+        this.add(new JLabel("Minute:"), c);
         c.gridx = 3;
         c.gridy = 0;
-        add(minuteField, c);
-    
+        this.add(this.minuteField, c);
         c.gridx = 4;
         c.gridy = 0;
-        add(new JLabel("Second:"), c);
-    
+        this.add(new JLabel("Second:"), c);
         c.gridx = 5;
         c.gridy = 0;
-        add(secondField, c);
-    
+        this.add(this.secondField, c);
         c.gridx = 6;
         c.gridy = 0;
-        add(alarmButton, c);
+        this.add(this.alarmButton, c);
     }
+
 
     public void toggleAlarm() {
-        if (!alarmActive) {
+        if (!this.alarmActive) {
             try {
-                int hour = Integer.parseInt(hourField.getText());
-                int minute = Integer.parseInt(minuteField.getText());
-                int second = Integer.parseInt(secondField.getText());
-                alarmTime = LocalTime.of(hour, minute, second);
-                alarmActive = true;
-                alarmButton.setText("Cancel Alarm");
-            } catch (NumberFormatException | DateTimeException e) {
-                JOptionPane.showMessageDialog(this, "Invalid time format. Please enter valid values.", "Error", JOptionPane.ERROR_MESSAGE);
+                int hour = Integer.parseInt(this.hourField.getText());
+                int minute = Integer.parseInt(this.minuteField.getText());
+                int second = Integer.parseInt(this.secondField.getText());
+                this.alarmTime = LocalTime.of(hour, minute, second);
+                this.alarmActive = true;
+                this.alarmButton.setText("Cancel Alarm");
+            } catch (DateTimeException | NumberFormatException var4) {
+                JOptionPane.showMessageDialog(this, "Invalid time format. Please enter valid values.", "Error", 0);
             }
         } else {
-            alarmActive = false;
-            alarmButton.setText("Set Alarm");
+            this.alarmActive = false;
+            this.alarmButton.setText("Set Alarm");
         }
+
+
     }
+
 
     public boolean isAlarmActive() {
-        return alarmActive;
+        return this.alarmActive;
     }
 
+
     public LocalTime getAlarmTime() {
-        return alarmTime;
+        return this.alarmTime;
     }
 }

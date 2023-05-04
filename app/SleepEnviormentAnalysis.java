@@ -22,6 +22,8 @@ class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
     private JButton fourCoffees = new JButton(new ImageIcon("fotor_2023-5-3_20_37_29.png"));
     private JButton fiveCoffees = new JButton(new ImageIcon("fotor_2023-5-3_20_37_29.png"));
     private JLabel caffeineLabel;
+
+    private JLabel screenLabel;
     private JButton compareButton;
     private int totalCaffeine = 0;
     private int totalScreenTime = 0;
@@ -38,23 +40,32 @@ class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
         options.add(this.threeCoffees);
         options.add(this.fourCoffees);
         options.add(this.fiveCoffees);
+
+
         this.setLayout(new GridLayout(1, 5));
         this.add(this.oneCoffee);
         this.add(this.twoCoffees);
         this.add(this.threeCoffees);
         this.add(this.fourCoffees);
         this.add(this.fiveCoffees);
+
         this.oneCoffee.addActionListener(this);
         this.twoCoffees.addActionListener(this);
         this.threeCoffees.addActionListener(this);
         this.fourCoffees.addActionListener(this);
         this.fiveCoffees.addActionListener(this);
-        this.caffeineLabel = new JLabel("Total Caffeine: " + this.totalCaffeine + "mg");
+
+        this.caffeineLabel = new JLabel("Total Caffeine: " + this.totalCaffeine + "mg.");
         this.add(this.caffeineLabel);
+        this.screenLabel = new JLabel("Total Screen time: " + this.totalScreenTime+ "hours.");
+        this.add(this.screenLabel);
+
         this.screenTimeField = new JTextField(2);
         this.setPreferredSize(new Dimension(650, 250));
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = 2;
+
+
         JLabel screenTimeLabel = new JLabel("Screen Time Today (hours): ");
         this.screenTimeField = new JTextField();
         this.add(screenTimeLabel);
@@ -84,19 +95,18 @@ class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
 
 
         this.caffeineLabel.setText("Total Caffeine: " + this.totalCaffeine + "mg");
-        if (this.totalCaffeine > MAX_SCREEN_TIME) {
+        if (this.totalCaffeine > MAX_CAFFEINE) {
             this.resultLabel.setText("<html><font color='red'>You should drink less caffeine during the day! It disturbs your sleep pattern. </font></html>");
-        } else if () {
+        } else {
             this.resultLabel.setText("<html><font color='green'>You have consumed a healthy amount of caffeine, try not to drink any caffeine around 5-7 hours before bedtime! !</font></html>");
         }
 
-
-        if (this.totalScreenTime > MAX_CAFFEINE) {
+        this.screenLabel.setText("Total Screen time: " + this.totalScreenTime+ "hours.");
+        if (this.totalScreenTime > MAX_SCREEN_TIME) {
             this.resultLabel2.setText("<html><font color='red'>You should put your phone down! The blue light from your devices disturbs your sleep! . </font></html>");
-        } else if (totalScreenTime <= MAX_SCREEN_TIME) {
+        } else {
             this.resultLabel2.setText("<html><font color='green'>Great work! Now try to not use any devices one hour before bed! . </font></html>");
         }
-
 
     }
 }

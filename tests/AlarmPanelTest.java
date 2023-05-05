@@ -1,13 +1,13 @@
-@@ -1,49 +0,0 @@
-        package tests;
 
-        import org.junit.jupiter.api.BeforeEach;
-        import org.junit.jupiter.api.Test;
+package tests;
 
-        import app.AlarmPanel;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-        import java.time.LocalTime;
-        import static org.junit.jupiter.api.Assertions.*;
+import app.AlarmPanel;
+
+import java.time.LocalTime;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AlarmPanelTest {
 

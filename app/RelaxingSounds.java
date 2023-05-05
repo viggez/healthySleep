@@ -82,10 +82,7 @@ public class RelaxingSounds extends JPanel implements ActionListener {
         } else if (e.getSource() == this.stopButton) {
             this.stopAudio();
         }
-
-
     }
-
 
     private void stopAudio() {
         if (this.clip != null && this.clip.isRunning()) {
@@ -93,24 +90,21 @@ public class RelaxingSounds extends JPanel implements ActionListener {
             this.startButton.setEnabled(true);
             this.stopButton.setEnabled(false);
         }
-
     }
 
     private String getAudioFilePath(String soundName) {
         String filePath = "";
         switch (soundName) {
             case "Rain and thunderstorm":
-                filePath = "rain-and-thunder-nature-sounds-7803.wav";
+                filePath = "soundFiles/rain-and-thunder-nature-sounds-7803.wav";
                 break;
             case "Rain on window":
-                filePath = "rain-on-roof-or-window-nature-sounds-8312.wav";
+                filePath = "soundFiles/rain-on-roof-or-window-nature-sounds-8312.wav";
                 break;
             case "Relaxing piano":
-                filePath = "the-last-piano-112677.wav";
+                filePath = "soundFiles/the-last-piano-112677.wav";
         }
-
 
         return filePath;
     }
 }
-

@@ -72,15 +72,11 @@ public class AlarmPanel extends JPanel {
             this.alarmActive = false;
             this.alarmButton.setText("Set Alarm");
         }
-
-
     }
-
 
     public boolean isAlarmActive() {
         return this.alarmActive;
     }
-
 
     public LocalTime getAlarmTime() {
         return this.alarmTime;

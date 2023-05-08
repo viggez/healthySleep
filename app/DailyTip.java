@@ -33,7 +33,7 @@ public class DailyTip extends JPanel {
     }
 
 
-    // Randomizes the message for each button press
+    // This method randomizes the message for each button press
     void showDailyTip() {
         int randomIndex = random.nextInt(tips.length);
         String dailyTip = tips[randomIndex];

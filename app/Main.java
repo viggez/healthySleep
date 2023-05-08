@@ -6,7 +6,6 @@ import javax.swing.*;
 
 // This is the main class.
 // Add new buttons here!
-
 public class Main {
     public Main() {
     }
@@ -17,10 +16,12 @@ public class Main {
             JFrame frame = new JFrame("Healthy Sleep");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
             // TimePanel
             TimePanel timePanel = new TimePanel();
             frame.add(timePanel, "First");
             JPanel buttonPanel = new JPanel(new FlowLayout());
+
 
             // Daily Tip Button
             JButton dailyTipButton = new JButton("Daily Tip");
@@ -30,6 +31,18 @@ public class Main {
                 dailyTip.showDailyTip();
             });
             buttonPanel.add(dailyTipButton);
+
+
+            // Sleep Review button
+            JButton sleepReviewButton = new JButton("Review your sleep");
+            SleepReview sleepReview = new SleepReview();
+            Dimension buttonSize4 = new Dimension(300, 30);
+            sleepReviewButton.setPreferredSize(buttonSize4);
+            buttonPanel.add(sleepReviewButton);
+            sleepReviewButton.addActionListener(e -> {
+                sleepReview.showSleepReviewDialog();
+            });
+
 
             // relaxingSounds Button
             JButton relaxingSoundsButton = new JButton("Relaxing Sounds too fall asleep");
@@ -46,6 +59,7 @@ public class Main {
                 soundsFrame.setVisible(true);
             });
 
+
             // sleepAnalysis Button
             JButton sleepAnalysisButton = new JButton("Sleep Environment Analysis");
             Dimension buttonSize3 = new Dimension(300, 30);
@@ -60,6 +74,7 @@ public class Main {
                 sleepAnalysisFrame.setVisible(true);
             });
             buttonPanel.add(sleepAnalysisButton);
+
 
             // Main frame
             frame.pack();

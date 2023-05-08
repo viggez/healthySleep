@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
+// This class handles the Alarm panel
 public class AlarmPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     public final JTextField hourField = new JTextField(2);
@@ -23,6 +24,7 @@ public class AlarmPanel extends JPanel {
     private LocalTime alarmTime = null;
 
 
+    // This method adds the frame and position of the alarm panel
     public AlarmPanel() {
         this.setLayout(new GridBagLayout());
         this.setPreferredSize(new Dimension(650, 150));
@@ -56,6 +58,7 @@ public class AlarmPanel extends JPanel {
     }
 
 
+    // This method handles the users input for when to trigger the alarm
     public void toggleAlarm() {
         if (!this.alarmActive) {
             try {

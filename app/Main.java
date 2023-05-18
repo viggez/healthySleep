@@ -2,6 +2,8 @@ package app;
 
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 // This is the main class.
@@ -45,17 +47,33 @@ public class Main {
 
 
             // relaxingSounds Button
-            JButton relaxingSoundsButton = new JButton("Relaxing Sounds too fall asleep");
+            JButton relaxingSoundsButton = new JButton("Relaxing Sounds to Fall Asleep");
             Dimension buttonSize = new Dimension(300, 30);
             relaxingSoundsButton.setPreferredSize(buttonSize);
             buttonPanel.add(relaxingSoundsButton);
             frame.add(buttonPanel, "Center");
             relaxingSoundsButton.addActionListener((e) -> {
-                JFrame soundsFrame = new JFrame("Relaxing Sounds too fall asleep");
-                soundsFrame.setDefaultCloseOperation(2);
+                // Create a new frame for the relaxing sounds
+                JFrame soundsFrame = new JFrame("Relaxing Sounds to Fall Asleep");
+                soundsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 soundsFrame.setSize(400, 200);
-                soundsFrame.add(new RelaxingSounds());
-                soundsFrame.setLocationRelativeTo((Component)null);
+
+                // Add a window listener to stop the audio before closing the frame
+                soundsFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        RelaxingSounds relaxingSounds = (RelaxingSounds) ((JFrame) e.getSource()).getContentPane().getComponent(0);
+                        relaxingSounds.stopAudio(); // Stop the audio before closing the frame
+                    }
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        frame.requestFocus();
+                    }
+                });
+
+                // Add the RelaxingSounds panel to the frame
+                soundsFrame.add(new RelaxingSounds(frame));
+                soundsFrame.setLocationRelativeTo(null);
                 soundsFrame.setVisible(true);
             });
 
@@ -65,14 +83,33 @@ public class Main {
             Dimension buttonSize3 = new Dimension(300, 30);
             sleepAnalysisButton.setPreferredSize(buttonSize3);
             sleepAnalysisButton.addActionListener((e) -> {
+                // Create a new frame for the sleep environment analysis
                 JFrame sleepAnalysisFrame = new JFrame("Sleep Environment Analysis");
-                sleepAnalysisFrame.setDefaultCloseOperation(2);
-                sleepAnalysisFrame.setSize(1000, 830);
+                sleepAnalysisFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 sleepAnalysisFrame.setResizable(false);
-                sleepAnalysisFrame.add(new SleepEnvironmentAnalysis());
-                sleepAnalysisFrame.setLocationRelativeTo((Component)null);
+
+                // Create a SleepEnvironmentAnalysis panel
+                SleepEnvironmentAnalysis sleepEnvironmentAnalysis = new SleepEnvironmentAnalysis();
+                sleepEnvironmentAnalysis.setPreferredSize(new Dimension(800, 370)); // Adjust the height here
+
+                // Create the content pane and add the SleepEnvironmentAnalysis panel
+                JPanel contentPane = new JPanel(new BorderLayout());
+                contentPane.add(sleepEnvironmentAnalysis, BorderLayout.CENTER);
+
+                // Create a button panel and add the compareButton
+                JPanel buttonPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout with center alignment
+                buttonPanel2.add(sleepEnvironmentAnalysis.getCompareButton()); // Use the existing compareButton
+                contentPane.add(buttonPanel2, BorderLayout.SOUTH);
+
+                // Set the content pane of the sleep analysis frame
+                sleepAnalysisFrame.setContentPane(contentPane);
+                sleepAnalysisFrame.pack(); // Pack the components to fit their preferred sizes
+                sleepAnalysisFrame.setSize(800, sleepAnalysisFrame.getHeight()); // Set the desired width
+                sleepAnalysisFrame.setLocationRelativeTo(null);
                 sleepAnalysisFrame.setVisible(true);
             });
+
+            // Add the sleepAnalysisButton to the buttonPanel
             buttonPanel.add(sleepAnalysisButton);
 
 
@@ -83,4 +120,5 @@ public class Main {
             frame.setVisible(true);
         });
     }
+
 }

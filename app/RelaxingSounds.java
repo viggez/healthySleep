@@ -15,10 +15,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
 public class RelaxingSounds extends JPanel implements ActionListener {
@@ -30,7 +27,7 @@ public class RelaxingSounds extends JPanel implements ActionListener {
     Clip clip;
 
 
-    public RelaxingSounds() {
+    public RelaxingSounds(JFrame frame) {
         this.label.setFont(new Font("Arial", 1, 20));
         this.setBounds(100, 300, 100, 30);
         this.label.setOpaque(true);
@@ -84,7 +81,7 @@ public class RelaxingSounds extends JPanel implements ActionListener {
         }
     }
 
-    private void stopAudio() {
+    void stopAudio() {
         if (this.clip != null && this.clip.isRunning()) {
             this.clip.stop();
             this.startButton.setEnabled(true);
@@ -106,5 +103,16 @@ public class RelaxingSounds extends JPanel implements ActionListener {
         }
 
         return filePath;
+    }
+    public JComboBox<String> getComboBox() {
+        return comboBox;
+    }
+
+    public JButton getStartButton() {
+        return startButton;
+    }
+
+    public JButton getStopButton() {
+        return stopButton;
     }
 }

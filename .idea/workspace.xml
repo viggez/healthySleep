@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fb3b78e1-c910-4fbf-b7c5-20f7fdaf5536" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/SleepEnvironmentAnalysis.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/RelaxingSoundsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/RelaxingSounds.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/RelaxingSounds.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/SleepEnviormentAnalysis.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/healthySleep.iml" beforeDir="false" afterPath="$PROJECT_DIR$/healthySleep.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/AlarmPanelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/AlarmPanelTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="fb3b78e1-c910-4fbf-b7c5-20f7fdaf5536" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -1,8 +1,4 @@
 package app;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,11 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
-    // Database connection variables
-    private Connection connection;
-    String url = "jdbc:mysql://localhost:3306/sleep_environment_db";
-    private final String DB_USERNAME = "root";
-    private final String DB_PASSWORD = "healthysleep!";
 
     // GUI components
     public JTextField screenTimeField;
@@ -47,8 +38,19 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
         Dimension coffeeButtonSize = new Dimension(80, 40); // Adjust button size here
         oneCoffee = new JButton(new ImageIcon("fotor_2023-5-3_20_37_29.png"));
         oneCoffee.setPreferredSize(coffeeButtonSize);
+        twoCoffees = new JButton(new ImageIcon("fotor_2023-5-3_20_37_29.png"));
+        twoCoffees.setPreferredSize(coffeeButtonSize);
+        threeCoffees = new JButton(new ImageIcon("fotor_2023-5-3_20_37_29.png"));
+        threeCoffees.setPreferredSize(coffeeButtonSize);
+        fourCoffees = new JButton(new ImageIcon("fotor_2023-5-3_20_37_29.png"));
+        fourCoffees.setPreferredSize(coffeeButtonSize);
+        fiveCoffees = new JButton(new ImageIcon("fotor_2023-5-3_20_37_29.png"));
+        fiveCoffees.setPreferredSize(coffeeButtonSize);
         buttonPanel.add(oneCoffee);
-        // Repeat the same for other coffee buttons (twoCoffees, threeCoffees, fourCoffees, fiveCoffees)
+        buttonPanel.add(twoCoffees);
+        buttonPanel.add(threeCoffees);
+        buttonPanel.add(fourCoffees);
+        buttonPanel.add(fiveCoffees);
 
         // Create a panel for the screen time input
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -65,11 +67,15 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
         caffeineLabel = new JLabel("Total Caffeine: " + totalCaffeine + "mg");
         resultPanel.add(caffeineLabel);
         // Repeat the same for screenLabel
+        screenLabel = new JLabel("Total Screen time: " + totalScreenTime + "hours");
+        resultPanel.add(caffeineLabel);
+        resultPanel.add(screenLabel);
 
         // Create labels for displaying result messages
         resultLabel = new JLabel();
         resultPanel.add(resultLabel);
-        // Repeat the same for resultLabel2
+        resultLabel2 = new JLabel();
+        resultPanel.add(resultLabel2);
 
         // Create the compareButton
         compareButton = new JButton("Compare with recommended amount!");
@@ -79,7 +85,11 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
 
         // Register action listeners for the coffee buttons
         oneCoffee.addActionListener(this);
-        // Repeat the same for other coffee buttons (twoCoffees, threeCoffees, fourCoffees, fiveCoffees)
+        twoCoffees.addActionListener(this);
+        threeCoffees.addActionListener(this);
+        fourCoffees.addActionListener(this);
+        fiveCoffees.addActionListener(this);
+
     }
 
     // Event handler for button clicks and compareButton
@@ -94,10 +104,7 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
             totalCaffeine += 250;
         } else if (e.getSource() == fiveCoffees) {
             totalCaffeine += 300;
-        } else if(e.getSource() == compareButton) {
-            saveInputToDatabase();
         }
-
         // Update the caffeine label based on totalCaffeine
         caffeineLabel.setText("Total Caffeine: " + totalCaffeine + "mg");
 
@@ -125,26 +132,13 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
         } else {
             resultLabel2.setText("<html><font color='green'>Great work! Your screen time is within the recommended limit.</font></html>");
         }
+        //Save data to database
+
+        DataBaseHandler dataHandler = new DataBaseHandler();
+        dataHandler.saveData(totalCaffeine, totalScreenTime);
+        dataHandler.closeConnection();
     }
 
-    // Save the input to the database
-    private void saveInputToDatabase() {
-        try {
-            // Prepare the SQL statement
-            String sql = "INSERT INTO sleep_data (total_caffeine, total_screen_time) VALUES (?, ?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, totalCaffeine);
-            statement.setInt(2, totalScreenTime);
-
-            // Execute the statement
-            statement.executeUpdate();
-
-            // Close the statement
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Component getCompareButton() {
         return compareButton;

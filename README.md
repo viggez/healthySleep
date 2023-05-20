@@ -22,11 +22,11 @@ Step 2: Import the SQL File
 - Open your MySQL client (e.g., MySQL Workbench).
 - Create a new database called sleep_environment_db.
 - Open the sleep_environment_data.sql file provided in this repository.
-- Execute the queries in the file to create the necessary tables and insert sample data.
 
 Step 3: Configure the Database Connection
 
-- Ensure you have the MySQL Connector/J library (JAR file) added to the project's dependencies. You can download it from here.
+- Ensure you have the MySQL Connector/J library (JAR file) added to the project's dependencies. You can download it from here. https://dev.mysql.com/downloads/connector/j/ 
+- Don't forget to unzip the file and add the JAR file to the modules dependencies.
 - In the app/DataBaseHandler.java file, adjust the following variables:
 - url: jdbc:mysql://localhost:3306/sleep_environment_db
 - username: root

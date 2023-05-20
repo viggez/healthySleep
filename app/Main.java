@@ -1,19 +1,28 @@
 package app;
 
-
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 // This is the main class.
 // Add new buttons here!
 public class Main {
     public Main() {
-    }
-
-    public static void main(String[] args) {
+    }public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+
+            // Create a database connection
+            Connection connection = null;
+            try {
+                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sleep_environment_db", "root", "healthySleep!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
 
             JFrame frame = new JFrame("Healthy Sleep");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,8 +45,12 @@ public class Main {
 
 
             // Sleep Review button
+            // ...
+
+// Sleep Review button
+            DataBaseHandler databaseHandler = new DataBaseHandler(connection); // Create a database handler
+            SleepReview sleepReview = new SleepReview(databaseHandler);
             JButton sleepReviewButton = new JButton("Review your sleep");
-            SleepReview sleepReview = new SleepReview();
             Dimension buttonSize4 = new Dimension(300, 30);
             sleepReviewButton.setPreferredSize(buttonSize4);
             buttonPanel.add(sleepReviewButton);
@@ -57,8 +70,7 @@ public class Main {
                 JFrame soundsFrame = new JFrame("Relaxing Sounds to Fall Asleep");
                 soundsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 soundsFrame.setSize(400, 200);
-
-                // Add a window listener to stop the audio before closing the frame
+// Add a window listener to stop the audio before closing the frame
                 soundsFrame.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
@@ -76,8 +88,6 @@ public class Main {
                 soundsFrame.setLocationRelativeTo(null);
                 soundsFrame.setVisible(true);
             });
-
-
             // sleepAnalysis Button
             JButton sleepAnalysisButton = new JButton("Sleep Environment Analysis");
             Dimension buttonSize3 = new Dimension(300, 30);
@@ -112,7 +122,6 @@ public class Main {
             // Add the sleepAnalysisButton to the buttonPanel
             buttonPanel.add(sleepAnalysisButton);
 
-
             // Main frame
             frame.pack();
             frame.setSize(750, 830);
@@ -120,5 +129,6 @@ public class Main {
             frame.setVisible(true);
         });
     }
-
 }
+
+

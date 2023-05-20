@@ -8,36 +8,7 @@ Instructions for how to build and run the project locally.
 
 ## Prerequisites
 
-Before running the code, make sure you have the following installed:
-
-Java Development Kit (JDK)
-MySQL Server
-MySQL Connector/J library (mysql-connector-java-8.0.26.jar)
-
-## Setup
-Step 1: git clone https://github.com/viggez/healthySleep.git
-
-Step 2: Import the SQL File
-
-- Open your MySQL client (e.g., MySQL Workbench).
-- Create a new database called sleep_environment_db.
-- Open the sleep_environment_data.sql file provided in this repository.
-
-Step 3: Configure the Database Connection
-
-- Ensure you have the MySQL Connector/J library (JAR file) added to the project's dependencies. You can download it from here. https://dev.mysql.com/downloads/connector/j/ 
-- Don't forget to unzip the file and add the JAR file to the modules dependencies.
-- In the app/DataBaseHandler.java file, adjust the following variables:
-- url: jdbc:mysql://localhost:3306/sleep_environment_db
-- username: root
-- password: healthySleep!
-
-Step 4: Run the Application
-
-- Run the Java application to connect to the database.
-- It allows users to input their caffeine intake and screen time, and stores the data in the database.
-- The actionPerformed method in the SleepEnvironmentAnalysis class handles the event when the user interacts with the GUI.
-- When the user clicks the coffee buttons or the compare button, the data is saved to the database using the DataBaseHandler class.
+List of any software or libraries that must be installed before running the project.
 
 ## Running the Tests
 

@@ -3,10 +3,12 @@ package app;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
-
     // GUI components
     public JTextField screenTimeField;
     public JButton oneCoffee;
@@ -89,7 +91,6 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
         threeCoffees.addActionListener(this);
         fourCoffees.addActionListener(this);
         fiveCoffees.addActionListener(this);
-
     }
 
     // Event handler for button clicks and compareButton
@@ -119,7 +120,12 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
         if (screenTimeField != null) {
             String text = screenTimeField.getText();
             if (!text.isEmpty()) {
-                totalScreenTime = Integer.parseInt(text);
+                try {
+                    totalScreenTime = Integer.parseInt(text);
+                } catch (NumberFormatException ex) {
+                    resultLabel2.setText("<html><font color='red'>Invalid input! Please enter a valid number.</font></html>");
+                    return; // Exit the method since the input is invalid
+                }
             }
         }
 
@@ -132,15 +138,24 @@ public class SleepEnvironmentAnalysis extends JPanel implements ActionListener {
         } else {
             resultLabel2.setText("<html><font color='green'>Great work! Your screen time is within the recommended limit.</font></html>");
         }
-        //Save data to database
 
-        DataBaseHandler dataHandler = new DataBaseHandler();
-        dataHandler.saveData(totalCaffeine, totalScreenTime);
-        dataHandler.closeConnection();
+        // if compareButton was pressed, update its text
+        if (e.getSource() == compareButton) {
+            compareButton.setText("Data saved in database!");
+            // Save the data in the database
+            try {
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sleep_environment_db", "root", "healthySleep!");
+                DataBaseHandler databaseHandler = new DataBaseHandler(connection);
+                databaseHandler.saveData(totalCaffeine, totalScreenTime, ""); // Empty review for now
+                databaseHandler.closeConnection();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
-
-    public Component getCompareButton() {
+    public JButton getCompareButton() {
         return compareButton;
+
     }
 }

@@ -2,38 +2,24 @@ package app;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
 
-
-// This class handles the Sleep Review feature
 public class SleepReview extends JPanel {
-    private final JButton sleepReviewButton;
+    public final JButton sleepReviewButton;
+    public final DataBaseHandler databaseHandler;
+    public OptionPaneHandler optionPane; // Use OptionPaneHandler instead of JOptionPane
 
-
-    // SleepReview Constructor
-    public SleepReview() {
+    public SleepReview(DataBaseHandler dataBaseHandler) {
         sleepReviewButton = new JButton("Sleep Review");
-        sleepReviewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSleepReviewDialog();
-            }
-        });
-
+        sleepReviewButton.addActionListener(e -> showSleepReviewDialog());
+        this.databaseHandler = dataBaseHandler;
         setLayout(new FlowLayout());
         add(sleepReviewButton);
+        optionPane = new OptionPaneHandler.DefaultOptionPaneHandler(); // Use DefaultOptionPaneHandler
     }
 
-
-    // This method handles the popup window when pressing the Sleep Review button
-    void showSleepReviewDialog() {
+    public void showSleepReviewDialog() {
         String[] options = {"Perfect! :D", "OK :│", "Not so good :("};
-        int choice = JOptionPane.showOptionDialog(
+        int choice = optionPane.showOptionDialog( // Use optionPane instead of JOptionPane
                 this,
                 "How was your sleep?",
                 "Sleep Review",
@@ -50,16 +36,19 @@ public class SleepReview extends JPanel {
         }
     }
 
+    public void setOptionPane(OptionPaneHandler optionPane) {
+        this.optionPane = optionPane;
+    }
 
-    // This method saves your sleep review into a text file
-    private void saveSleepReview(String review) {
-        String fileName = "sleep_reviews.txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-            writer.write(LocalDate.now() + ": " + review);
-            writer.newLine();
-            JOptionPane.showMessageDialog(this, "Sleep review saved!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error saving sleep review.", "Error", JOptionPane.ERROR_MESSAGE);
+    public void saveSleepReview(String review) {
+        try {
+            int totalCaffeine = databaseHandler.getSavedCaffeine();
+            int totalScreenTime = databaseHandler.getSavedScreenTime();
+            databaseHandler.saveData(totalCaffeine, totalScreenTime, review);
+            optionPane.showMessageDialog(this, "Sleep review saved!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            optionPane.showMessageDialog(this, "Error saving data to the database.", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 }

@@ -16,11 +16,11 @@ import javax.swing.*;
 
 
 // This class handles the clock being displayed at the top of the main frame
-class TimePanel extends JPanel {
+public class TimePanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    private final JLabel timeLabel = new JLabel();
+    public final JLabel timeLabel = new JLabel();
     private final Timer timer;
-    private final AlarmPanel alarmPanel = new AlarmPanel();
+    public final AlarmPanel alarmPanel = new AlarmPanel();
     private Clip currentClip;
 
 
@@ -42,7 +42,7 @@ class TimePanel extends JPanel {
 
 
     // This method updates the clock to central european time aswell as handeling the popup-window for when the alarm is triggered
-    private void updateCurrentTime() {
+    public void updateCurrentTime() {
         ZonedDateTime cetTime = ZonedDateTime.now(ZoneId.of("CET"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedTime = cetTime.format(formatter);
